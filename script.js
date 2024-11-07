@@ -15,21 +15,46 @@
   // });
 
   cw1.addEventListener("click", function () {
-    fetch("https://restcountries.com/v3.1/capital/Warsaw")
+    const token = "FfICPijyJvJvAGMxNFNMcVvBrsoYmepA";
+    const url = "https://www.ncei.noaa.gov/cdo-web/api/v2/stations";
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        token: token,
+      },
+    })
       .then((response) => response.json())
-      .then((array) => {
-        console.log(array);
+      .then((data) => {
+        console.log(data);
+        const answer = document.getElementById("answer");
         answer.innerHTML = "";
-        const ul = document.createElement("ul");
-
-        array.forEach((post) => {
-          const li = document.createElement("li");
-          li.innerHTML = `${post}`;
-          li.innerHTML = `${post.name.common}<br><strong>${post.capital}</strong><br>${post.population}<br>${post.region}<br>${post.subregion}`;
-          ul.appendChild(li);
+        const table = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        headerRow.innerHTML = `
+          <th>Station ID</th>
+          <th>Name</th>
+          <th>State</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        `;
+        table.appendChild(headerRow);
+        data.results.forEach((station) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${station.id}</td>
+            <td>${station.name || "N/A"}</td>
+            <td>${station.state || "N/A"}</td>
+            <td>${station.latitude || "N/A"}</td>
+            <td>${station.longitude || "N/A"}</td>
+          `;
+          table.appendChild(row);
         });
-
-        answer.appendChild(ul);
+        answer.appendChild(table);
+      })
+      .catch((error) => {
+        console.error("Błąd podczas pobierania danych:", error);
+        answer.innerHTML = "Wystąpił błąd podczas pobierania danych.";
       });
   });
 
