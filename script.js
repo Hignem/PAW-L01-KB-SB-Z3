@@ -178,4 +178,31 @@
           console.error("Błąd podczas pobierania losowego GIF-a:", error)
         );
     });
+
+  document
+    .getElementById("searchGifButton")
+    .addEventListener("click", function () {
+      searchText = document.getElementById("search").value;
+      offset = 0;
+      searchGifs();
+    });
+
+  function searchGifs() {
+    const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchText}&limit=5&offset=${offset}&rating=g&lang=en`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        gifContainer.innerHTML = "";
+        data.data.forEach((gif) => {
+          const img = document.createElement("img");
+          img.src = gif.images.fixed_height.url;
+          gifContainer.appendChild(img);
+        });
+      })
+      .catch((error) =>
+        console.error("Błąd podczas wyszukiwania GIF-ów:", error)
+      );
+  }
 })();
