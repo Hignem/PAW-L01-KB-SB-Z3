@@ -60,7 +60,7 @@
 
   cw2.addEventListener("click", function () {
     const token = "FfICPijyJvJvAGMxNFNMcVvBrsoYmepA";
-    const url = "https://www.ncei.noaa.gov/cdo-web/api/v2/datasets ";
+    const url = "https://www.ncei.noaa.gov/cdo-web/api/v2/datasets";
 
     fetch(url, {
       method: "GET",
@@ -71,7 +71,6 @@
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        const answer = document.getElementById("answer");
         answer.innerHTML = "";
         const table = document.createElement("table");
         const headerRow = document.createElement("tr");
@@ -101,6 +100,7 @@
         answer.innerHTML = "Wystąpił błąd podczas pobierania danych.";
       });
   });
+
   fetchData.addEventListener("click", function () {
     const token = "FfICPijyJvJvAGMxNFNMcVvBrsoYmepA";
     const datasetId = document.getElementById("datasetId").value;
@@ -157,42 +157,4 @@
         answer.innerHTML = `Wystąpił błąd: ${error.message}`;
       });
   });
-  // cw2.addEventListener("click", function () {
-  //   alert("Loading...");
-  //   fetch("https://jsonplaceholder.typicode.com/posts/1")
-  //     .then((response) => response.json())
-  //     .then((post) => {
-  //       console.log(post);
-  //       answer.innerHTML = "";
-  //       const ul = document.createElement("ul");
-  //       const li = document.createElement("li");
-  //       li.innerHTML = `${post.id}<br><strong>${post.title}</strong<br>${post.body}`;
-  //       ul.appendChild(li);
-
-  //       answer.appendChild(ul);
-  //     });
-  // });
-
-  // cw3.addEventListener("click", function () {
-  //   answer.innerHTML = "Processing...";
-
-  //   const newPost = {
-  //     title: "Nowy post",
-  //     body: "Bratku mniam",
-  //     userId: 1,
-  //   };
-
-  //   fetch("https://jsonplaceholder.typicode.com/posts", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(newPost),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       answer.innerHTML = `Dodano nowy post o ID = ${data.id}`;
-  //     });
-  // });
 })();
