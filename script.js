@@ -2,7 +2,7 @@
   const example = document.getElementById("example");
   const cw1 = document.getElementById("cw1");
   const cw2 = document.getElementById("cw2");
-  const cw3 = document.getElementById("cw3");
+  const fetchData = document.getElementById("fetchData");
   const answer = document.getElementById("answer");
 
   // example.addEventListener("click", function () {
@@ -101,7 +101,62 @@
         answer.innerHTML = "Wystąpił błąd podczas pobierania danych.";
       });
   });
+  fetchData.addEventListener("click", function () {
+    const token = "FfICPijyJvJvAGMxNFNMcVvBrsoYmepA";
+    const datasetId = document.getElementById("datasetId").value;
+    const locationId = document.getElementById("locationId").value;
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
 
+    const url = `https://www.ncei.noaa.gov/cdo-web/api/v2/data?datasetid=${datasetId}&locationid=${locationId}&startdate=${startDate}&enddate=${endDate}`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        token: token,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+
+        const answer = document.getElementById("answer");
+        answer.innerHTML = "";
+        const table = document.createElement("table");
+
+        const headerRow = document.createElement("tr");
+        headerRow.innerHTML = `
+          <th>Data</th>
+          <th>Station ID</th>
+          <th>Value</th>
+          <th>Datatype</th>
+        `;
+        table.appendChild(headerRow);
+
+        data.results.forEach((record) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${record.date}</td>
+            <td>${record.station}</td>
+            <td>${record.value}</td>
+            <td>${record.datatype}</td>
+          `;
+          table.appendChild(row);
+        });
+
+        answer.appendChild(table);
+      })
+      .catch((error) => {
+        console.error("Błąd:", error);
+        const answer = document.getElementById("answer");
+        answer.innerHTML = `Wystąpił błąd: ${error.message}`;
+      });
+  });
   // cw2.addEventListener("click", function () {
   //   alert("Loading...");
   //   fetch("https://jsonplaceholder.typicode.com/posts/1")
